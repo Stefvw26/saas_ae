@@ -1,0 +1,18 @@
+# fichier : .htaccess (racine du projet)
+# Redirige tout vers /public et protège les répertoires internes
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Répertoires internes : accès interdit
+    RewriteRule ^(app|config|database|modules|routes|storage|views)(/|$) - [F]
+
+    # Racine du projet -> /public
+    RewriteRule ^$ public/ [L]
+
+    # Tout le reste -> /public/…
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
